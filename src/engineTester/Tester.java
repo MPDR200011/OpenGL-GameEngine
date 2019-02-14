@@ -23,7 +23,7 @@ public class Tester {
 
         Window window = new Window("Tester", 1280, 600);
         window.show();
-
+    
         List<GameObject> gameObjects = new ArrayList<>();
 
         //gameObjects.add(new Earth(new Vector3f(0,0,0), new Vector3f(0,0,0), 1, 1, new Vector3f(0,0,0)));
