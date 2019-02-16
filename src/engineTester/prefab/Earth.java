@@ -1,13 +1,12 @@
-package entities.prefab;
+package engineTester.prefab;
 
 import entities.GameObject;
 import entities.components.Model;
 import entities.components.RigibBody;
-import entities.components.script.Attractor;
+import engineTester.prefab.script.Attractor;
 import models.RawModel;
 import models.TexturedModel;
 import renderEngine.RawModelManager;
-import renderEngine.TextureManager;
 import textures.Texture;
 import utils.vector.Vector3f;
 

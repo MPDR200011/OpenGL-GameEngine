@@ -1,9 +1,9 @@
-package entities.components.script;
+package engineTester.prefab.script;
 
 import entities.GameObject;
 import entities.components.RigibBody;
 import utils.vector.Vector3f;
-
+import entities.components.Script;
 import java.util.ArrayList;
 import java.util.List;
 

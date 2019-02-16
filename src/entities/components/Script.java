@@ -1,4 +1,4 @@
-package entities.components.script;
+package entities.components;
 
 import entities.components.Component;
 import entities.GameObject;

@@ -1,8 +1,8 @@
-package entities.prefab;
+package engineTester.prefab;
 
 import entities.GameObject;
 import entities.components.Camera;
-import entities.components.script.CameraMovement;
+import engineTester.prefab.script.CameraMovement;
 import utils.vector.Vector3f;
 
 public class CameraObject extends GameObject {

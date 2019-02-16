@@ -1,4 +1,4 @@
-package entities.prefab;
+package engineTester.prefab;
 
 import entities.GameObject;
 import entities.components.Terrain;

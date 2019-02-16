@@ -3,9 +3,9 @@ package engineTester;
 import entities.*;
 import entities.components.RigibBody;
 import entities.components.Terrain;
-import entities.prefab.*;
-import entities.components.script.CameraMovement;
-import entities.components.script.Script;
+import engineTester.prefab.*;
+import engineTester.prefab.script.CameraMovement;
+import entities.components.Script;
 import input.KeyboardHandler;
 import input.MouseTracker;
 import org.lwjgl.opengl.GL;
@@ -100,8 +100,6 @@ public class Tester {
             renderer.render(light, cameraObj);
 
             glfwSwapBuffers(window.ID());
-
-
         }
 
         Game.loader.cleanUp();

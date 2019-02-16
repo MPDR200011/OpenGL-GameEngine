@@ -1,4 +1,4 @@
-package entities.components.script;
+package engineTester.prefab.script;
 
 import entities.GameObject;
 import entities.components.Camera;
@@ -6,6 +6,7 @@ import input.KeyboardHandler;
 import input.MouseTracker;
 import utils.vector.Vector2f;
 import utils.vector.Vector3f;
+import entities.components.Script;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;

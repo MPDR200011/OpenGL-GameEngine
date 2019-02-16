@@ -1,10 +1,9 @@
-package entities.prefab;
+package engineTester.prefab;
 
 import entities.GameObject;
 import entities.components.Model;
 import models.TexturedModel;
 import renderEngine.RawModelManager;
-import renderEngine.TextureManager;
 import textures.Texture;
 import utils.vector.Vector3f;
 
