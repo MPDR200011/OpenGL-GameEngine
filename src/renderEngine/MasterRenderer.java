@@ -24,7 +24,7 @@ public class MasterRenderer {
     private static final float SKY_BLUE = 0.5f;
 
     private Map<TexturedModel, List<Transform>> entities = new HashMap<>();
-    private List<Model> terrains = new ArrayList<>();
+    private List<Terrain> terrains = new ArrayList<>();
 
     public MasterRenderer(Window window){
 
@@ -74,7 +74,7 @@ public class MasterRenderer {
 
     public void processEntity(GameObject obj){
         Model objModel = obj.getComponent(Model.class);
-        if ((objModel != null) && !(objModel instanceof Terrain)){
+        if (objModel != null){
             TexturedModel entityModel = objModel.getModel();
             List<Transform> batch = entities.get(entityModel);
             if (batch != null){

@@ -6,7 +6,7 @@ import models.TexturedModel;
 
 public class Model extends Component {
 
-    public TexturedModel model;
+    private TexturedModel model;
 
     public Model(GameObject gameObject, TexturedModel model) {
         super(gameObject);

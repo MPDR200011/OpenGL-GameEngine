@@ -1,6 +1,8 @@
 package engineTester;
 
+import engineTester.prefab.script.PlayerCamera;
 import entities.*;
+import entities.components.Camera;
 import entities.components.RigibBody;
 import entities.components.Terrain;
 import engineTester.prefab.*;
@@ -23,31 +25,44 @@ public class Tester {
 
         Window window = new Window("Tester", 1280, 600);
         window.show();
-    
+
         List<GameObject> gameObjects = new ArrayList<>();
 
         //gameObjects.add(new Earth(new Vector3f(0,0,0), new Vector3f(0,0,0), 1, 1, new Vector3f(0,0,0)));
-        gameObjects.add(new TerrainObject(new Vector3f(0,0,0), 800, 128));
+        TerrainObject terrain = new TerrainObject(new Vector3f(0, 0, 0), 800, 128);
+        gameObjects.add(terrain);
+        Terrain terrComp = terrain.getComponent(Terrain.class);
 
-//        for (int i = 0; i < 300; i++){
-//            gameObjects.add(new Tree(new Vector3f((float) Math.random() * 800,0,(float) Math.random()*800),
-//                    new Vector3f(0,0,0), 6));
-//        }
-//
-//        for (int i = 0; i < 1000; i++) {
-//            gameObjects.add(new Grass(new Vector3f((float) Math.random() * 800,0,(float) Math.random()*800),
-//                    new Vector3f(0,0,0), 1));
-//        }
-//
-//        for (int i = 0; i < 500; i++) {
-//            gameObjects.add(new Fern(new Vector3f((float) Math.random() * 800,0,(float) Math.random()*800),
-//                    new Vector3f(0,0,0), 1));
-//        }
+        for (int i = 0; i < 300; i++) {
+            float x = (float) Math.random() * 800;
+            float z = (float) Math.random() * 800;
+            gameObjects.add(new Tree(new Vector3f(x, terrComp.getTerrainHeight(x, z), z),
+                    new Vector3f(0, 0, 0), 6));
+        }
 
-        LightObject light = new LightObject(new Vector3f(0,100,0), new Vector3f(1,1,1));
+        for (int i = 0; i < 1000; i++) {
+            float x = (float) Math.random() * 800;
+            float z = (float) Math.random() * 800;
+            gameObjects.add(new Grass(new Vector3f(x, terrComp.getTerrainHeight(x, z), z),
+                    new Vector3f(0, 0, 0), 1));
+        }
 
-        CameraObject cameraObj = new CameraObject(new Vector3f(0,10,0));
-        CameraMovement cameraMovement = (CameraMovement) cameraObj.getComponentByIndex(1);
+        for (int i = 0; i < 500; i++) {
+            float x = (float) Math.random() * 800;
+            float z = (float) Math.random() * 800;
+            gameObjects.add(new Fern(new Vector3f(x, terrComp.getTerrainHeight(x, z), z),
+                    new Vector3f(0, 0, 0), 1));
+        }
+
+        LightObject light = new LightObject(new Vector3f(0, 100, 0), new Vector3f(1, 1, 1));
+
+        //CameraObject cameraObj = new CameraObject(new Vector3f(0,10,0));
+        //CameraMovement cameraMovement = (CameraMovement) cameraObj.getComponentByIndex(1);
+        GameObject cameraObj = new GameObject(new Vector3f(100, 0, 100), new Vector3f(), 1);
+        cameraObj.addComponent(new Camera(cameraObj));
+        PlayerCamera cameraMovement = new PlayerCamera(cameraObj);
+        cameraObj.addComponent(cameraMovement);
+
 
         //Loop thingy
         GL.createCapabilities();
@@ -58,7 +73,7 @@ public class Tester {
         boolean escapePressed = false;
         while (!glfwWindowShouldClose(window.ID())) {
             glfwPollEvents();
-            if (KeyboardHandler.isKeyDown(GLFW_KEY_ESCAPE)){
+            if (KeyboardHandler.isKeyDown(GLFW_KEY_ESCAPE)) {
                 if (!escapePressed) {
                     if (paused) {
                         paused = false;
@@ -67,7 +82,7 @@ public class Tester {
                         paused = true;
                         glfwSetInputMode(window.ID(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                         Vector2f windowSize = window.getSize();
-                        glfwSetCursorPos(window.ID(), windowSize.x/2, windowSize.y/2);
+                        glfwSetCursorPos(window.ID(), windowSize.x / 2, windowSize.y / 2);
                     }
                 }
                 escapePressed = true;
@@ -77,23 +92,24 @@ public class Tester {
 
             MouseTracker.update(window);
 
-            if (!paused){
-                cameraMovement.move();
-                for (Script script: Script.scipts){
-                    if (script.enabled){
+            if (!paused) {
+                //cameraMovement.move();
+                cameraMovement.move(gameObjects.get(0).getComponent(Terrain.class));
+                for (Script script : Script.scipts) {
+                    if (script.isEnabled()) {
                         script.fixedUpdate();
                     }
                 }
-                for (RigibBody rb: RigibBody.rigidBodies){
+                for (RigibBody rb : RigibBody.rigidBodies) {
                     rb.update();
                 }
             }
 
-            for (GameObject obj: gameObjects){
+            for (GameObject obj : gameObjects) {
                 renderer.processEntity(obj);
             }
 
-            for (Terrain terr: Terrain.terrains){
+            for (Terrain terr : Terrain.terrains) {
                 renderer.processTerrain(terr);
             }
 

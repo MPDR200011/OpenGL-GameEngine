@@ -1,6 +1,7 @@
 package renderEngine;
 
 import entities.components.Model;
+import entities.components.Terrain;
 import entities.components.Transform;
 import models.RawModel;
 import models.TexturedModel;
@@ -29,8 +30,8 @@ public class TerrainRenderer {
         shader.stop();
     }
 
-    public void render(List<Model> terrains){
-        for (Model model: terrains){
+    public void render(List<Terrain> terrains){
+        for (Terrain model: terrains){
             prepareTerrain(model.getModel());
 
             loadModelMatrix(model.transform);
