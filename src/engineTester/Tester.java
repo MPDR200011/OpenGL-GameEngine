@@ -1,17 +1,18 @@
 package engineTester;
 
 import engineTester.prefab.script.PlayerCamera;
+import engineTester.prefab.script.TerrainCenterer;
 import entities.*;
-import entities.components.Camera;
-import entities.components.RigibBody;
-import entities.components.Terrain;
+import entities.components.*;
 import engineTester.prefab.*;
 import engineTester.prefab.script.CameraMovement;
-import entities.components.Script;
 import input.KeyboardHandler;
 import input.MouseTracker;
+import models.RawModel;
+import models.TexturedModel;
 import org.lwjgl.opengl.GL;
 import renderEngine.*;
+import textures.Texture;
 import utils.vector.Vector2f;
 import utils.vector.Vector3f;
 
@@ -28,10 +29,18 @@ public class Tester {
 
         List<GameObject> gameObjects = new ArrayList<>();
 
-        //gameObjects.add(new Earth(new Vector3f(0,0,0), new Vector3f(0,0,0), 1, 1, new Vector3f(0,0,0)));
-        TerrainObject terrain = new TerrainObject(new Vector3f(0, 0, 0), 800, 128);
+        //CameraObject cameraObj = new CameraObject(new Vector3f(0,0,10));
+        //CameraMovement cameraMovement = (CameraMovement) cameraObj.getComponentByIndex(1);
+        GameObject cameraObj = new GameObject(new Vector3f(100, 0, 100), new Vector3f(), 1);
+        cameraObj.addComponent(new Camera(cameraObj));
+        PlayerCamera cameraMovement = new PlayerCamera(cameraObj);
+        cameraObj.addComponent(cameraMovement);
+
+        TerrainObject terrain = new TerrainObject(new Vector3f(0, 0, 0), 800, 512);
         gameObjects.add(terrain);
         Terrain terrComp = terrain.getComponent(Terrain.class);
+
+        //gameObjects.add(new Earth(new Vector3f(0,0,0), new Vector3f(0,0,0), 1, 1, new Vector3f(0,0,0)));
 
         for (int i = 0; i < 300; i++) {
             float x = (float) Math.random() * 800;
@@ -54,15 +63,14 @@ public class Tester {
                     new Vector3f(0, 0, 0), 1));
         }
 
+        GameObject dragon = new GameObject(new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
+        RawModel dragonRM = RawModelManager.getRawModel("dragon");
+        Texture dragonTex = new Texture("purple", false, false);
+        TexturedModel dragonModel = new TexturedModel(dragonRM, dragonTex);
+        dragon.addComponent(new Model(dragon, dragonModel));
+        gameObjects.add(dragon);
+
         LightObject light = new LightObject(new Vector3f(0, 100, 0), new Vector3f(1, 1, 1));
-
-        //CameraObject cameraObj = new CameraObject(new Vector3f(0,10,0));
-        //CameraMovement cameraMovement = (CameraMovement) cameraObj.getComponentByIndex(1);
-        GameObject cameraObj = new GameObject(new Vector3f(100, 0, 100), new Vector3f(), 1);
-        cameraObj.addComponent(new Camera(cameraObj));
-        PlayerCamera cameraMovement = new PlayerCamera(cameraObj);
-        cameraObj.addComponent(cameraMovement);
-
 
         //Loop thingy
         GL.createCapabilities();
@@ -93,8 +101,8 @@ public class Tester {
             MouseTracker.update(window);
 
             if (!paused) {
-                //cameraMovement.move();
-                cameraMovement.move(gameObjects.get(0).getComponent(Terrain.class));
+                cameraMovement.move(terrComp);
+                //cameraMovement.move(gameObjects.get(0).getComponent(Terrain.class));
                 for (Script script : Script.scipts) {
                     if (script.isEnabled()) {
                         script.fixedUpdate();

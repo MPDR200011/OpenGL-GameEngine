@@ -39,4 +39,10 @@ public class GameObject {
         return this.transform;
     }
 
+    public void setPosition(float x, float y, float z) {
+        transform.position.x = x;
+        transform.position.y = y;
+        transform.position.z = z;
+    }
+
 }

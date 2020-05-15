@@ -21,7 +21,7 @@ public class Terrain extends Component {
     private TexturedModel model;
 
     //Properties
-    private float SIZE;
+    public float SIZE;
     private int VERTEX_COUNT;
     private int count;
     private Vector3f[][] vertices;
@@ -31,13 +31,10 @@ public class Terrain extends Component {
 
     //Noise Properties
     private OpenSimplexNoise noise;
-    private float MAX_HEIGHT = 10;
-    private float MIN_HEIGHT = -10;
-    private float WAVELENGTH = 8;
+    private float MAX_HEIGHT = 50;
+    private float MIN_HEIGHT = 0;
     private float xOffset;
     private float zOffset;
-    private float xStretch = 1.5f;
-    private float zStretch = 1.5f;
 
     public Terrain(GameObject attachedObject, Texture texture, float terrainSize, int terrainVertexCount) {
         super(attachedObject);
@@ -132,8 +129,17 @@ public class Terrain extends Component {
     }
 
     private float calculateVertexHeight(float x, float z){
-        float noiseValue =  (float) noise.eval((xOffset + x)/xStretch * WAVELENGTH,
-                (zOffset + z)/zStretch * WAVELENGTH);
+        float noiseValue = 0.0f;
+
+        float G = 0.5f;
+        float f = 5.0f;
+        float a = 1.0f;
+
+        for (int i = 0; i < 4; i++) {
+            noiseValue += (float) noise.eval((xOffset + x) * f, (zOffset + z) * f) * a;
+            f *= 2.0f;
+            a *= G;
+        }
 
         noiseValue *= (MAX_HEIGHT - MIN_HEIGHT);
         noiseValue += MIN_HEIGHT;
@@ -195,7 +201,7 @@ public class Terrain extends Component {
     }
 
     public void setOffset(Vector2f offset) {
-        this.xOffset = offset.x;
-        this.zOffset = offset.y;
+        this.xOffset = offset.x / SIZE;
+        this.zOffset = offset.y / SIZE;
     }
 }
